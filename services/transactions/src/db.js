@@ -19,6 +19,7 @@ module.exports = async function connect(){
   await client.query(`
     CREATE TABLE IF NOT EXISTS transactions (
       id SERIAL NOT NULL,
+      ref varchar,
       customer_id varchar NOT NULL,
       product_id varchar NOT NULL,
       quantity numeric NOT NULL
