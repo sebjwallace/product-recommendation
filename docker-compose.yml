@@ -1,0 +1,26 @@
+version: '3.0'
+
+services:
+
+  transactions-db:
+    image: postgres
+    container_name: transactions-db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+
+  transactions-service:
+    depends_on:
+      - transactions-db
+    links:
+      - transactions-db
+    build: ./services/transactions
+    ports:
+      - 3000:3000
+    volumes:
+      - ./services/transactions:/usr/src/app
+    working_dir: /usr/src/app
+    command: npm run dev
