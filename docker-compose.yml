@@ -15,8 +15,10 @@ services:
   transactions-service:
     depends_on:
       - transactions-db
+      - generator-service
     links:
       - transactions-db
+      - generator-service
     build: ./services/transactions
     ports:
       - 3000:3000
@@ -24,3 +26,26 @@ services:
       - ./services/transactions:/usr/src/app
     working_dir: /usr/src/app
     command: npm run dev
+
+  generator-db:
+    image: postgres
+    container_name: generator-db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+    ports:
+      - 5433:5432
+
+  generator-service:
+    depends_on:
+      - generator-db
+    links:
+      - generator-db
+    build: ./services/generator
+    ports:
+      - 5000:5000
+    volumes:
+      - ./services/generator:/usr/src/app
+    working_dir: /usr/src/app
+    command: nodemon ./src/app.py
