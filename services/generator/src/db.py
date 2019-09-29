@@ -9,14 +9,7 @@ def connect():
     port = '5432'
   )
 
-  connection.cursor().execute('''
-    CREATE TABLE IF NOT EXISTS jobs (
-      id SERIAL NOT NULL,
-      customer_id varchar NOT NULL,
-      product_id varchar NOT NULL,
-      quantity numeric NOT NULL
-    )
-  ''')
+  connection.cursor().execute(open("/usr/src/app/src/setup.sql", "r").read())
 
   connection.commit()
 

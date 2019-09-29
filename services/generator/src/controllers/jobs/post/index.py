@@ -5,9 +5,9 @@ def addJob(customerId, productId, quantity):
 
   connection.cursor().execute('''
     INSERT INTO jobs
-    (customer_id, product_id, quantity)
+    (customer_id, product_id, quantity, status)
     VALUES
-    (%s, %s, %s)
+    (%s, %s, %s, 'pending')
   ''', [ customerId, productId, quantity ])
 
   connection.commit()
