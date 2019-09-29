@@ -1,10 +1,10 @@
-version: '3.0'
+version: '3.1'
 
 services:
 
-  transactions-db:
+  recommendations-db:
     image: postgres
-    container_name: transactions-db
+    container_name: recommendations-db
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: user
@@ -12,18 +12,18 @@ services:
     ports:
       - 5432:5432
 
-  transactions-service:
+  recommendations-service:
     depends_on:
-      - transactions-db
+      - recommendations-db
       - generator-service
     links:
-      - transactions-db
+      - recommendations-db
       - generator-service
-    build: ./services/transactions
+    build: ./services/recommendations
     ports:
       - 3000:3000
     volumes:
-      - ./services/transactions:/usr/src/app
+      - ./services/recommendations:/usr/src/app
     working_dir: /usr/src/app
     command: npm run dev
 
@@ -47,5 +47,5 @@ services:
       - 5000:5000
     volumes:
       - ./services/generator:/usr/src/app
-    working_dir: /usr/src/app
-    command: nodemon ./src/app.py
+    working_dir: /usr/src/app/src
+    command: nodemon app.py

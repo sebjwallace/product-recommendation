@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 
 def connect():
   connection = psycopg2.connect(
@@ -9,8 +10,14 @@ def connect():
     port = '5432'
   )
 
-  connection.cursor().execute(open("/usr/src/app/src/setup.sql", "r").read())
-
-  connection.commit()
-
   return connection
+
+def cursor():
+  connection = connect()
+  return connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+
+def setup():
+  connection = connect()
+  connection.cursor().execute(open("/usr/src/app/src/schemas.sql", "r").read())
+  connection.cursor().execute(open("/usr/src/app/src/seed.sql", "r").read())
+  connection.commit()

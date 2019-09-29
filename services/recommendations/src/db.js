@@ -7,7 +7,7 @@ module.exports = async function connect(){
   if(client) return client;
 
   client = new Client({
-    host: 'transactions-db',
+    host: 'recommendations-db',
     user: 'user',
     password: 'root',
     database: 'db',
@@ -15,16 +15,6 @@ module.exports = async function connect(){
   });
 
   await client.connect();
-
-  await client.query(`
-    CREATE TABLE IF NOT EXISTS transactions (
-      id SERIAL NOT NULL,
-      ref varchar,
-      customer_id varchar NOT NULL,
-      product_id varchar NOT NULL,
-      quantity numeric NOT NULL
-    )
-  `);
 
   return client;
 
