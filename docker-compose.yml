@@ -1,5 +1,4 @@
-version: '3.1'
-
+version: '3'
 services:
 
   recommendations-db:
@@ -15,17 +14,17 @@ services:
   recommendations-service:
     depends_on:
       - recommendations-db
-      - generator-service
     links:
       - recommendations-db
-      - generator-service
+    container_name: recommendations-service
     build: ./services/recommendations
     ports:
       - 3000:3000
+      - 9229:9229
     volumes:
-      - ./services/recommendations:/usr/src/app
-    working_dir: /usr/src/app
-    command: npm run dev
+      - ./services/recommendations/src:/usr/src/app/src
+    working_dir: /usr/src/app/src
+    command: nodemon --inspect=0.0.0.0 app.js
 
   generator-db:
     image: postgres
@@ -42,10 +41,11 @@ services:
       - generator-db
     links:
       - generator-db
+    container_name: generator-service
     build: ./services/generator
     ports:
       - 5000:5000
     volumes:
-      - ./services/generator:/usr/src/app
+      - ./services/generator/src:/usr/src/app/src
     working_dir: /usr/src/app/src
     command: nodemon app.py
