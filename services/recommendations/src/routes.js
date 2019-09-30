@@ -8,7 +8,7 @@ const v1 = [
 
   {
     method: 'get',
-    path: '/recommendations/:userId',
+    path: '/recommendations/:customerId',
     controller: require('controllers/recommendations/get')
   }
 

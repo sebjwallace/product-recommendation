@@ -3,6 +3,7 @@ from flask import request
 
 import db
 from controllers.jobs.post.index import addJob
+from storage import getNextJob
 from controllers.transactions.get.index import getTransactions
 
 app = Flask(__name__)
@@ -23,6 +24,10 @@ def transactions():
     query['offset'],
     query['limit']
   )
+
+@app.route('/jobs/next', methods = ['GET'])
+def jobsNext():
+  return getNextJob()
 
 db.setup()
 
