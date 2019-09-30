@@ -1,4 +1,5 @@
 version: '3'
+
 services:
 
   recommendations-db:
@@ -20,11 +21,10 @@ services:
     build: ./services/recommendations
     ports:
       - 3000:3000
-      - 9229:9229
     volumes:
       - ./services/recommendations/src:/usr/src/app/src
     working_dir: /usr/src/app/src
-    command: nodemon --inspect=0.0.0.0 app.js
+    command: nodemon app.js
 
   generator-db:
     image: postgres
