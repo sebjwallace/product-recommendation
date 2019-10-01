@@ -1,8 +1,9 @@
+const fs = require('fs');
 const { Client } = require('pg');
 
 let client;
 
-module.exports = async function connect(){
+async function connect(){
 
   if(client) return client;
 
@@ -19,3 +20,14 @@ module.exports = async function connect(){
   return client;
 
 }
+
+async function setup(){
+  const schemas = fs.readFileSync('database/schemas.sql', 'utf8');
+  const client = await connect();
+  client.query(schemas);
+}
+
+module.exports = {
+  connect,
+  setup
+};

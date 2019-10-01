@@ -1,4 +1,4 @@
-const connect = require('db');
+const { connect } = require('database');
 
 module.exports = async function(req, res){
 
