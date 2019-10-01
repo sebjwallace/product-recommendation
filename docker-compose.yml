@@ -2,6 +2,42 @@ version: '3'
 
 services:
 
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - 7000:15672
+      - 7001:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=root
+
+  transactions-db:
+    image: postgres
+    container_name: transactions-db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+    ports:
+      - 5442:5432
+
+  transactions-service:
+    depends_on:
+      - transactions-db
+      - rabbitmq
+    links:
+      - transactions-db
+    container_name: transactions-service
+    build: ./services/transactions
+    ports:
+      - 3010:3000
+    volumes:
+      - ./services/transactions/src:/usr/src/app/src
+    working_dir: /usr/src/app/src
+    command: nodemon app.js
+
   recommendations-db:
     image: postgres
     container_name: recommendations-db
@@ -39,6 +75,7 @@ services:
   generator-service:
     depends_on:
       - generator-db
+      - rabbitmq
     links:
       - generator-db
     container_name: generator-service

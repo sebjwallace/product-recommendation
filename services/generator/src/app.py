@@ -3,7 +3,7 @@ from flask import request
 
 import db
 from controllers.jobs.post.index import addJob
-from storage import getNextJob
+from storage import getAllJobs, getNextJob, clearJobs
 from controllers.transactions.get.index import getTransactions
 
 app = Flask(__name__)
@@ -25,9 +25,18 @@ def transactions():
     query['limit']
   )
 
+@app.route('/jobs', methods = ['GET'])
+def jobsAll():
+  return getAllJobs() or ''
+
+@app.route('/jobs/clear', methods = ['GET'])
+def jobsClear():
+  clearJobs()
+  return { "ok": True }
+
 @app.route('/jobs/next', methods = ['GET'])
 def jobsNext():
-  return getNextJob()
+  return getNextJob() or ''
 
 db.setup()
 

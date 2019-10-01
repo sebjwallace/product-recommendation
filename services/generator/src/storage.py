@@ -19,6 +19,16 @@ def createJob(customerId, productId, quantity):
 
   connection.commit()
 
+def getAllJobs():
+  connection = connect()
+
+  query = cursor()
+  query.execute('''
+    SELECT * FROM jobs;
+  ''')
+
+  return query.fetchall()
+
 def getNextJob():
   connection = connect()
 
@@ -27,7 +37,16 @@ def getNextJob():
     SELECT * FROM jobs
     WHERE status=1
     ORDER BY timestamp ASC
-    LIMIT 1
+    LIMIT 1;
   ''')
 
   return query.fetchone()
+
+def clearJobs():
+  connection = connect()
+
+  connection.cursor().execute('''
+    TRUNCATE jobs;
+  ''')
+
+  connection.commit()
