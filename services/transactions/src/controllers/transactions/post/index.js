@@ -22,8 +22,7 @@ module.exports = async function(req, res){
   `, [ customerId, productId, quantity, ref ]);
 
   const message = JSON.stringify({ customerId, productId, quantity, ref });
-  const response = await send({ queue: 'transactions', message });
-  console.log(response);
+  await send({ queue: 'transactions', message });
 
   res.json({ ok: true });
 

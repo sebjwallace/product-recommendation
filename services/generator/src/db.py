@@ -19,5 +19,4 @@ def cursor():
 def setup():
   connection = connect()
   connection.cursor().execute(open("/usr/src/app/src/schemas.sql", "r").read())
-  connection.cursor().execute(open("/usr/src/app/src/seed.sql", "r").read())
   connection.commit()

@@ -29,7 +29,7 @@ function disconnect(){
 
 async function send({ queue, message }){
   const { channel } = await connect();
-  channel.assertQueue(queue, { durable: false });
+  channel.assertQueue(queue, { durable: true });
   channel.sendToQueue(queue, Buffer.from(message));
   return true;
 }

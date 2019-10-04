@@ -36,7 +36,8 @@ services:
     volumes:
       - ./services/transactions/src:/usr/src/app/src
     working_dir: /usr/src/app/src
-    command: nodemon app.js
+    command: |
+      nodemon app.js
 
   recommendations-db:
     image: postgres
