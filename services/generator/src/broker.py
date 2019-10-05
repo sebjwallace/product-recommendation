@@ -14,7 +14,7 @@ def connect():
 
 def consume(queue, cb):
   def callback(ch, method, properties, body):
-    response = cb(json.loads(body))
+    response = json.dumps(cb(json.loads(body)))
     # channel.queue_declare(queue='recommendations')
     channel.basic_publish(
       exchange = '',

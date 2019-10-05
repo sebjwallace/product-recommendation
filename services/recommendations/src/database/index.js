@@ -1,33 +1,14 @@
-const fs = require('fs');
-const { Client } = require('pg');
+const mongoose = require('mongoose');
 
-let client;
+let connection;
 
-async function connect(){
-
-  if(client) return client;
-
-  client = new Client({
-    host: 'recommendations-db',
-    user: 'user',
-    password: 'root',
-    database: 'db',
-    port: 5432
-  });
-
-  await client.connect();
-
-  return client;
-
-}
-
-async function setup(){
-  const schemas = fs.readFileSync('database/schemas.sql', 'utf8');
-  const client = await connect();
-  client.query(schemas);
+function connect(){
+  if(connection) return connection;
+  mongoose.set('useFindAndModify', false);
+  connection = mongoose.createConnection('mongodb://recommendations-db');
+  return connection;
 }
 
 module.exports = {
-  connect,
-  setup
-};
+  connect
+}

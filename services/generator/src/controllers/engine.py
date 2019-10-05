@@ -37,8 +37,15 @@ def generate(customerId):
   customerProductMatrix = customerProductMatrix.T.sort_values('Rank', ascending=False)
 
   recommendedProducts = customerProductMatrix[customerProductMatrix['Rank'] > 0]
+  recommendedProducts = [ recommendedProducts['Rank'] ]
+  recommendedProducts = pd.DataFrame(recommendedProducts).T
 
-  return recommendedProducts.to_json
+  response = {
+    "customerId": customerId,
+    "recommendedProducts": recommendedProducts['Rank'].to_dict()
+  }
+
+  return response
 
 
 def updateCustomerProduct(customerId, productId, quantity):

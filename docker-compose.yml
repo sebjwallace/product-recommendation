@@ -40,14 +40,11 @@ services:
       nodemon app.js
 
   recommendations-db:
-    image: postgres
     container_name: recommendations-db
-    environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USER: user
-      POSTGRES_DB: db
+    image: mongo
+    restart: always
     ports:
-      - 5432:5432
+      - 27017:27107
 
   recommendations-service:
     depends_on:
