@@ -2,25 +2,26 @@ process.env.NODE_PATH = './';
 
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const config = require('./config');
-const routes = require('./routes');
+const database = require('database');
+const broker = require('broker');
+const getRecommendations = require('./controllers/recommendations/get');
+const consumeRecommendations = require('./controllers/recommendations/consume');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const apiVersions = Object.keys(routes);
-apiVersions.forEach((version) => {
-  routes[version].forEach(({ method, path, controller }) => {
-    app[method](`/${version}${path}`, controller);
-  });
-})
+app.get('/recommendations/:customerId', getRecommendations);
 
-app.listen(config.port, () => {
+app.listen(config.port, async () => {
+  await database.setup();
+  await broker.consume({ queue: 'recommendations', callback: consumeRecommendations });
   console.log(`Server listening on port ${config.port}`);
 });
+
+process.on('exit', broker.disconnect);
 
 module.exports = app;

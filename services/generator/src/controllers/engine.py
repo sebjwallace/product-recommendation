@@ -4,13 +4,17 @@ import numpy as np
 import scipy.spatial
 from db import connect, cursor
 
-def generate(transaction):
+def process(transaction):
   customerId = transaction['customerId']
   productId = transaction['productId']
   quantity = transaction['quantity']
 
   updateCustomerProduct(customerId, productId, quantity)
+  recommendation = generate(customerId)
 
+  return recommendation
+
+def generate(customerId):
   data = pd.read_sql_query('SELECT * FROM customerProduct', connect())
   customerProductMatrix = data.pivot_table(index='customerid', columns='productid', values='quantity', fill_value=0)
 
@@ -34,7 +38,7 @@ def generate(transaction):
 
   recommendedProducts = customerProductMatrix[customerProductMatrix['Rank'] > 0]
 
-  return recommendedProducts
+  return recommendedProducts.to_json
 
 
 def updateCustomerProduct(customerId, productId, quantity):

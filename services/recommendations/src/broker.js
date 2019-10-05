@@ -27,6 +27,15 @@ function disconnect(){
   });
 }
 
+async function consume({ queue, callback }){
+  const { channel } = await connect();
+  // channel.assertQueue(queue, { durable: true });
+  channel.consume(queue, async (message) => {
+    await callback(message.content.toString());
+    channel.ack(message);
+  }, { noAck: false });
+}
+
 async function send({ queue, message }){
   const { channel } = await connect();
   // channel.assertQueue(queue, { durable: true });
@@ -37,5 +46,6 @@ async function send({ queue, message }){
 module.exports = {
   connect,
   disconnect,
+  consume,
   send
 };
