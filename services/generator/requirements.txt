@@ -5,3 +5,4 @@ jsonify
 pika
 numpy
 pandas
+scipy
