@@ -1,13 +1,13 @@
 const fs = require('fs');
 const { Client } = require('pg');
 
-let client;
+let _client;
 
 async function connect(){
 
-  if(client) return client;
+  if(_client) return _client;
 
-  client = new Client({
+  const client = new Client({
     host: 'transactions-db',
     user: 'user',
     password: 'root',
@@ -15,16 +15,21 @@ async function connect(){
     port: 5432
   });
 
-  await client.connect();
-
-  return client;
+  try {
+    await client.connect();
+    return _client = client;
+  } catch (e) {
+    console.log('GHAVE YOU FCKING CONNECTED YOU CIUNT?')
+    return setTimeout(connect, 500);
+  }
 
 }
 
 async function setup(){
+  const _client = await connect();
+  if(!_client) return setTimeout(setup, 500);
   const schemas = fs.readFileSync('database/schemas.sql', 'utf8');
-  const client = await connect();
-  client.query(schemas);
+  _client.query(schemas);
 }
 
 module.exports = {

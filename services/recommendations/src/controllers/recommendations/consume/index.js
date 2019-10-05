@@ -8,9 +8,7 @@ module.exports = function(message){
     { id: customerId },
     recommendedProducts,
     { upsert: true },
-    function(e){ console.log(e,'HELLO DFSSS') }
-  ).exec();
-
-  console.log('recommendations');
+    () => console.log('saved')
+  );
 
 }
