@@ -6,16 +6,16 @@ def connect():
     try:
       credentials = pika.PlainCredentials('user','root')
       connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq',5672,'/',credentials))
-      return connection.channel()
-      # channel.queue_declare('transactions', durable=True)
+      channel = connection.channel()
+      channel.queue_declare('transactions', durable=True)
+      return channel
     except pika.exceptions.AMQPConnectionError:
       continue
 
 def consume(queue, cb):
-  channel = connect()
   def callback(ch, method, properties, body):
     response = cb(json.loads(body))
-    # channel.queue_declare(queue=queue)
+    # channel.queue_declare(queue='recommendations')
     channel.basic_publish(
       exchange = '',
       routing_key = 'recommendations',
@@ -23,10 +23,10 @@ def consume(queue, cb):
     )
     channel.basic_ack(method.delivery_tag)
 
+  channel = connect()
   channel.basic_consume(
     queue = queue,
     auto_ack = False,
     on_message_callback = callback
   )
-
   channel.start_consuming()

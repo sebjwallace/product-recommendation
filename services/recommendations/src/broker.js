@@ -29,7 +29,7 @@ function disconnect(){
 
 async function consume({ queue, callback }){
   const { channel } = await connect();
-  // channel.assertQueue(queue, { durable: true });
+  channel.assertQueue(queue, { durable: true });
   channel.consume(queue, async (message) => {
     await callback(message.content.toString());
     channel.ack(message);
