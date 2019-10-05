@@ -3,3 +3,5 @@ Flask
 psycopg2
 jsonify
 pika
+numpy
+pandas

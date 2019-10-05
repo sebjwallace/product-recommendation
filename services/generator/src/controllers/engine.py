@@ -1,6 +1,24 @@
-from db import connect
+from db import connect, cursor
+import pandas as pd
 
-def generate(customerId, productId, quantity):
+def generate(transaction):
+  customerId = transaction['customerId']
+  productId = transaction['productId']
+  quantity = transaction['quantity']
+
+  updateCustomerProduct(customerId, productId, quantity)
+
+  query = cursor()
+  query.execute('SELECT * FROM customerProduct')
+  print(query.fetchall(), flush=True)
+
+  data = pd.read_sql_query('SELECT * FROM customerProduct', connect())
+  customerProductMatrix = data.pivot_table(index='customerid', columns='productid', values='quantity', fill_value=0)
+
+  print(customerProductMatrix, flush=True)
+
+
+def updateCustomerProduct(customerId, productId, quantity):
   connection = connect()
   
   connection.cursor().execute('''
@@ -16,7 +34,3 @@ def generate(customerId, productId, quantity):
   })
 
   connection.commit()
-  
-  c = connection.cursor()
-  c.execute('SELECT * FROM customerProduct')
-  print(c.fetchall(), flush=True)

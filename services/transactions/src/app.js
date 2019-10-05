@@ -24,11 +24,6 @@ apiVersions.forEach((version) => {
 
 app.listen(config.port, async () => {
   console.log(`Server listening on port ${config.port}`);
-  // const { channel } = await connect();
-  // channel.consume('transactions', (message) => {
-  //   console.log('message', message.content.toString());
-  //   channel.ack(message);
-  // }, { noAck: false });
 });
 
 process.on('exit', disconnect);
