@@ -6,10 +6,10 @@ module.exports = function(message){
 
   Customer.findOneAndUpdate(
     { id: customerId },
-    { $set: recommendedProducts },
-    { upsert: true, passRawResult: true },
-    function(){ console.log('saved') }
-  );
+    recommendedProducts,
+    { upsert: true },
+    function(e){ console.log(e,'HELLO DFSSS') }
+  ).exec();
 
   console.log('recommendations');
 

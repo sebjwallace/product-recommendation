@@ -44,7 +44,7 @@ services:
     image: mongo
     restart: always
     ports:
-      - 27017:27107
+      - 27017:27017
 
   recommendations-service:
     depends_on:
