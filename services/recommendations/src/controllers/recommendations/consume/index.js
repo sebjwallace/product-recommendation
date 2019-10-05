@@ -4,9 +4,11 @@ module.exports = function(message){
 
   const { customerId, recommendedProducts } = JSON.parse(message);
 
+  console.log(recommendedProducts);
+
   Customer.findOneAndUpdate(
     { id: customerId },
-    recommendedProducts,
+    { products: recommendedProducts },
     { upsert: true },
     () => console.log('saved')
   );
