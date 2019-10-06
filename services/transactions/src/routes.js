@@ -1,17 +1,14 @@
-const v1 = [
-  
-  {
-    method: 'post',
-    path: '/transactions',
-    controller: require('./controllers/transactions/post')
-  },
+module.exports = function (app){
 
-  {
-    method: 'get',
-    path: '/transactions',
-    controller: require('controllers/transactions/get')
-  }
+  app.post(
+    '/transactions',
+    require('./controllers/transactions/post/validate'),
+    require('./controllers/transactions/post')
+  );
 
-];
+  app.get(
+    '/transactions',
+    require('controllers/transactions/get')
+  );
 
-module.exports = { v1 };
+}

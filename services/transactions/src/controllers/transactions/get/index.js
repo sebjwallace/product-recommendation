@@ -3,7 +3,7 @@ const { connect } = require('database');
 module.exports = async function(req, res){
 
   const {
-    query: { offset = 0, limit = 1 }
+    query: { offset = 0, limit = 100 }
   } = req;
 
   const client = await connect();

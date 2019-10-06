@@ -19,7 +19,6 @@ async function connect(){
     await client.connect();
     return _client = client;
   } catch (e) {
-    console.log('GHAVE YOU FCKING CONNECTED YOU CIUNT?')
     return setTimeout(connect, 500);
   }
 
