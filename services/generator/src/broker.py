@@ -1,10 +1,13 @@
 import pika
 import json
+import os
+
+env = os.environ
 
 def connect():
   while True:
     try:
-      credentials = pika.PlainCredentials('user','root')
+      credentials = pika.PlainCredentials(env['RABBITMQ_USER'],env['RABBITMQ_PASSWORD'])
       connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq',5672,'/',credentials))
       channel = connection.channel()
       channel.queue_declare('transactions', durable=True)
@@ -15,7 +18,6 @@ def connect():
 def consume(queue, cb):
   def callback(ch, method, properties, body):
     response = json.dumps(cb(json.loads(body)))
-    # channel.queue_declare(queue='recommendations')
     channel.basic_publish(
       exchange = '',
       routing_key = 'recommendations',

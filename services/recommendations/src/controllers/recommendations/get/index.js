@@ -6,7 +6,7 @@ module.exports = function(req, res){
 
   Customer.findOne(
     { id: customerId },
-    (error, recommendation) => res.json(error || recommendation.products)
+    (error, recommendation = {}) => res.json(error || recommendation.products)
   );
 
 }

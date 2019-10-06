@@ -22,7 +22,7 @@ module.exports = async function(req, res){
     quantity
   }) => {
     const message = JSON.stringify({ customerId, productId, quantity });
-    send({ queue: 'transactions', message });
+    return send({ queue: 'transactions', message });
   }));
 
   res.json({ ok: true });

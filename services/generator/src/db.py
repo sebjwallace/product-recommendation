@@ -1,11 +1,14 @@
+import os
 import psycopg2
 import psycopg2.extras
 
+env = os.environ
+
 def connect():
   connection = psycopg2.connect(
-    database = 'db',
-    user = 'user',
-    password = 'root',
+    database = env['POSTGRES_DB'],
+    user = env['POSTGRES_USER'],
+    password = env['POSTGRES_PASSWORD'],
     host = 'generator-db',
     port = '5432'
   )
